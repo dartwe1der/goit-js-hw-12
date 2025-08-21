@@ -174,3 +174,25 @@ button:disabled {
   color: #fff;
   font-weight: bold;
 }
+
+.load-more {
+  display: none;
+  margin: 20px auto;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2196f3;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.load-more:hover {
+  background-color: #1976d2;
+  transform: scale(1.02);
+}
+
+.load-more.visible {
+  display: block;
+}
