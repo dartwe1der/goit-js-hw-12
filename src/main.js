@@ -1,9 +1,9 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import { getImagesByQuery } from './js/pixabay-api';
 import { createGallery, clearGallery, showLoader, hideLoader, showLoadMoreButton, hideLoadMoreButton } from './js/render-functions';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+
+import { lightbox } from './js/render-functions.js';
 
 const form = document.querySelector('.form');
 const searchInput = form.elements['search-text'];
@@ -12,20 +12,24 @@ const loadMoreBtn = document.querySelector('.load-more');
 let currentPage = 1;
 let currentQuery = '';
 let totalHits = 0;
-let totalFetched = 0; 
-const perPage = 15; 
+let totalFetched = 0;
 
 const gallery = document.querySelector('.gallery');
-
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   currentQuery = searchInput.value.trim();
+
+  if (currentQuery === '') {
+    iziToast.warning({
+      title: 'Warning',
+      message: 'Please enter a search query.',
+      position: 'topRight',
+    });
+    return;
+  }
+
   currentPage = 1;
   totalFetched = 0;
 
@@ -41,7 +45,6 @@ form.addEventListener('submit', async (event) => {
         message: 'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
-      hideLoader();
       return;
     }
 
@@ -49,7 +52,9 @@ form.addEventListener('submit', async (event) => {
     totalHits = response.totalHits;
     totalFetched = response.hits.length;
 
-    if (totalFetched < totalHits) {
+    if (totalFetched >= totalHits) {
+      return;
+    } else {
       showLoadMoreButton();
     }
 
