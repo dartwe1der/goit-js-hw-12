@@ -3,8 +3,6 @@ import { createGallery, clearGallery, showLoader, hideLoader, showLoadMoreButton
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import { lightbox } from './js/render-functions.js';
-
 const form = document.querySelector('.form');
 const searchInput = form.elements['search-text'];
 const loadMoreBtn = document.querySelector('.load-more');
